@@ -26,74 +26,49 @@ section .text
     
 _start:
     ;Print Input de e
-    mov eax, 4          ;System call "print"
-    mov ebx, 1          ;File descriptor (stdout)
-    mov ecx, inputE     ;Mensaje
-    mov edx, lenInputE  ;Tamaño de mensaje
+    mov eax, 4              ;System call "print"
+    mov ebx, 1              ;File descriptor (stdout)
+    mov ecx, inputE         ;Mensaje
+    mov edx, lenInputE      ;Tamaño de mensaje
     int 0x80
 
     ;Leer input
-    mov eax, 3          ;System call "read"
-    mov ebx, 2          ;No c
-    mov ecx, e          ;Almacenar en e
+    mov eax, 3              ;System call "read"
+    mov ebx, 2              ;No c
+    mov ecx, e              ;Almacenar en e
     mov edx, 4          
     int 0x80
 
-    ; Convertir de ascii a int
-    mov esi, e          ;Puntero a e
-    mov ebx, esi
-    add ebx, 4          ;Tamaño de e (viene una variable)
-    mov eax, 0          ;Inicializar eax
+    prepush:
+    push $4 ;(Ocupa 2 bytes)                 ;Tamaño de e (falta la variable) al stack
+    push1:
+    push e ;(Ocupa 8 bytes)               ;Pasar direccion de e al stack
+    pusheo:
+    call funcion ;(Ocupa 2 )           ;Llamar a funcion
 
-ascii_to_int:
-    movzx edx, byte [esi]   ;Cargar primer byte de e
+    mov [e], eax            ;Guardar el valor en e
 
-    sub edx, 48             ;Restar 48 para obtener el valor
-
-    imul eax, 10        ;Tomar el valor actual y multiplicarlo por 10
-    add eax, edx        ;Sumar el valor actual con el nuevo dígito
-
-    inc esi             ;Incrementar puntero
-
-    cmp esi, ebx        ;Comparar puntero con el final de e
-    jne ascii_to_int    ;Si no es igual, saltar a ascii_to_int
-
-    mov [e], eax        ;Guardar el valor en e
-
-
-
-
-    ;push [e]
-    ;jmp ascii_to_int
-
-    ; ;Print Input de d
-    ; mov eax, 4          ;System call "print"
-    ; mov ebx, 1          ;File descriptor (stdout)
-    ; mov ecx, inputD     ;Mensaje
-    ; mov edx, lenInputD  ;Tamaño de mensaje
+    ; NO PUEDO LEER MAS DE UN VALOR
+    ;Print Input de d
+    ; mov eax, 4              ;System call "print"
+    ; mov ebx, 1              ;File descriptor (stdout)
+    ; mov ecx, inputD         ;Mensaje
+    ; mov edx, lenInputD      ;Tamaño de mensaje
     ; int 0x80
 
     ; ;Leer input
-    ; mov eax, 3          ;System call "read"
-    ; mov ebx, 2          ;No c
-    ; mov ecx, d          ;Almacenar en d
+    ; mov eax, 3              ;System call "read"
+    ; mov ebx, 2              ;No c
+    ; mov ecx, d              ;Almacenar en e
     ; mov edx, 4          
     ; int 0x80
 
+    ; push $4
+    ; push d
+    ; call funcion
 
-    ; ;Print Input de n
-    ; mov eax, 4          ;System call "print"
-    ; mov ebx, 1          ;File descriptor (stdout)
-    ; mov ecx, inputN     ;Mensaje
-    ; mov edx, lenInputN  ;Tamaño de mensaje
-    ; int 0x80
 
-    ; ;Leer input
-    ; mov eax, 3          ;System call "read"
-    ; mov ebx, 2          ;No c
-    ; mov ecx, n          ;Almacenar en n
-    ; mov edx, 4          
-    ; int 0x80
+   
 
 _final:
     ;Acabar
@@ -101,4 +76,40 @@ _final:
     mov ebx, 0
     int 0x80
 
+;Funcion para convertir ascii a decimal
+;Entrada:
+;    param0: número de dígitos en decimal (tamaño)
+;    param1: dirección de la cadena de caracteres
+funcion:
+    push rbp ;Ocupa 8 bytes      ;Guardar el valor de ebp sirve como referencia
+    pushenf:
+    mov rbp, rsp                ;Set el nuevo base pointer
+    nose:
+
+    mov esi, [rbp + 16]         ;Puntero a cadena de caracteres
+    mov ebx, esi        
+    mov ecx, [rbp + 24]         ;Tamaño de cadena de caracteres
+    add ebx, ecx                ;Dirección final de cadena de caracteres
+    xor eax, eax                ;Inicializar eax
+
+    ascii_to_dec:
+        movzx edx, byte [esi]   ;Cargar primer byte de cadena de caracteres
+
+        sub edx, 48             ;Restar 48 para obtener el valor
+
+        imul eax, 10            ;Tomar el valor actual y multiplicarlo por 10
+        add eax, edx            ;Sumar el valor actual con el nuevo dígito
+
+        inc esi                 ;Incrementar puntero
+
+        cmp esi, ebx            ;Comparar puntero con el final de cadena de caracteres
+        jne ascii_to_dec        ;Si no es igual, saltar a ascii_to_dec
+
+    mov [rbp - 8], eax          ;Valor de retorno
+
+    mov rsp, rbp                ;Mover el stack pointer a la posición de rbp
+    pop rbp                     ;Recuperar el valor de rbp
+    ret                         ;Retornar
+
+    
 
