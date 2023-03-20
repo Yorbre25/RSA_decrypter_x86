@@ -1,23 +1,22 @@
-;.386
-;.model flat,stdcall
-;.stack 4096
-;ExitProcess proto,dwExitCode:dword
+%include "Constantes.inc"
+%include "AsciiToDec.inc"
 
 section .data
 
     ;Mensajes para ingresas los valores de la llave
     ;privada
-    inputE db "Introduzca e: "
-    lenInputE equ $-inputE
+    ; inputE db "Introduzca e: "
+    ; lenInputE equ $-inputE
     
-    inputD db "Introduzca d: "
-    lenInputD equ $-inputD
+    ; inputD db "Introduzca d: "
+    ; lenInputD equ $-inputD
 
-    inputN db "Introduzca n: "
-    lenInputN equ $-inputN
+    ; inputN db "Introduzca n: "
+    ; lenInputN equ $-inputN
 
+    ; inputSize equ 4
 section .bss
-    e resb 4
+    e resb inputSize
     d resb 4
     n resb 4
 
@@ -36,15 +35,15 @@ _start:
     mov rax, 3              ;System call "read"
     mov rbx, 2              ;No c
     mov rcx, e              ;Almacenar en e
-    mov rdx, 4          
+    mov rdx, inputSize      ;Número de bytes a leer
     int 0x80
 
     prepush:
-    push $4 ;(Ocupa 2 bytes)                 ;Tamaño de e (falta la variable) al stack
+    push inputSize ;(Ocupa 2 bytes)                 ;Tamaño de e al stack
     push1:
-    push e ;(Ocupa 8 bytes)               ;Pasar direccion de e al stack
+    push e ;(Ocupa 8 bytes)                         ;Pasar direccion de e al stack
     pusheo:
-    call funcion ;(Ocupa 2 )           ;Llamar a funcion
+    call ascii_to_dec ;(Ocupa 2 bytes)              ;Llamar a ascii_to_dec
 
     mov [e], eax            ;Guardar el valor en e
 
@@ -65,10 +64,7 @@ _start:
 
     ; push $4
     ; push d
-    ; call funcion
-
-
-   
+    ; call ascii_to_dec
 
 _final:
     ;Acabar
@@ -76,40 +72,47 @@ _final:
     mov ebx, 0
     int 0x80
 
-;Funcion para convertir ascii a decimal
-;Entrada:
-;    param0: número de dígitos en decimal (tamaño)
-;    param1: dirección de la cadena de caracteres
-funcion:
-    push rbp ;Ocupa 8 bytes      ;Guardar el valor de ebp sirve como referencia
-    pushenf:
-    mov rbp, rsp                ;Set el nuevo base pointer
-    nose:
+; ;Funcion para convertir ascii a decimal. Si el char es un espacio o null
+; ;se ignora.
+; ;Entrada:
+; ;    param0: número de caracteres (tamaño)
+; ;    param1: dirección en memoria de la cadena de caracteres
+; ascii_to_dec:
+;     push rbp ;Ocupa 8 bytes      ;Guardar el valor de ebp sirve como referencia
+;     pushenf:
+;     mov rbp, rsp                ;Set el nuevo base pointer
+;     nose:
 
-    mov esi, [rbp + 16]         ;Puntero a cadena de caracteres
-    mov ebx, esi        
-    mov ecx, [rbp + 24]         ;Tamaño de cadena de caracteres
-    add ebx, ecx                ;Dirección final de cadena de caracteres
-    xor eax, eax                ;Inicializar eax
+;     mov esi, [rbp + 16]         ;Puntero a cadena de caracteres
+;     mov ebx, esi        
+;     mov ecx, [rbp + 24]         ;Tamaño de cadena de caracteres
+;     add ebx, ecx                ;Dirección final de cadena de caracteres
+;     xor eax, eax                ;Inicializar eax
 
-    ascii_to_dec:
-        movzx edx, byte [esi]   ;Cargar primer byte de cadena de caracteres
+;     nextByte:
+;         movzx edx, byte [esi]   ;Cargar primer byte de cadena de caracteres
 
-        sub edx, 48             ;Restar 48 para obtener el valor
+;         cmp edx, 32             ;Checkear si el codigo ascii es un espacio " "
+;         je continueNextByte     ;Si el char es un espacio, saltarse la conversión a decimal
+;         cmp edx, 10             ;Checkear si el codigo ascii es vacio ""
+;         je break_nextByte       ;Si el char es null, salir de la función
 
-        imul eax, 10            ;Tomar el valor actual y multiplicarlo por 10
-        add eax, edx            ;Sumar el valor actual con el nuevo dígito
+;         sub edx, 48             ;Restar 48 para obtener el valor
 
-        inc esi                 ;Incrementar puntero
+;         imul eax, 10            ;Tomar el valor actual y multiplicarlo por 10
+;         add eax, edx            ;Sumar el valor actual con el nuevo dígito
 
-        cmp esi, ebx            ;Comparar puntero con el final de cadena de caracteres
-        jne ascii_to_dec        ;Si no es igual, saltar a ascii_to_dec
+;         continueNextByte:
+;         inc esi                 ;Incrementar puntero
 
-    mov [rbp - 8], eax          ;Valor de retorno
+;         cmp esi, ebx            ;Comparar puntero con el final de cadena de caracteres
+;         jne nextByte            ;Si no es igual, saltar a nextByte
+;     break_nextByte:
+;     mov [rbp - 8], eax          ;Valor de retorno
 
-    mov rsp, rbp                ;Mover el stack pointer a la posición de rbp
-    pop rbp                     ;Recuperar el valor de rbp
-    ret                         ;Retornar
+;     mov rsp, rbp                ;Mover el stack pointer a la posición de rbp
+;     pop rbp                     ;Recuperar el valor de rbp
+;     ret                         ;Retornar
 
     
 
