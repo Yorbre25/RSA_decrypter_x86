@@ -33,10 +33,10 @@ _start:
     int 0x80
 
     ;Leer input
-    mov eax, 3              ;System call "read"
-    mov ebx, 2              ;No c
-    mov ecx, e              ;Almacenar en e
-    mov edx, 4          
+    mov rax, 3              ;System call "read"
+    mov rbx, 2              ;No c
+    mov rcx, e              ;Almacenar en e
+    mov rdx, 4          
     int 0x80
 
     prepush:
