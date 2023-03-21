@@ -2,7 +2,6 @@
 
 section .data
     inputFilename db "5.txt", 0         ;Nombre del archivo que se va a leer
-    outputFilename db "6.txt", 0        ;Nombre del archivo que se va a escribir
 
 section .bss
     buffer resb 4                       ;Buffer para el archivo
