@@ -52,5 +52,5 @@ def fastExpMod(base, expo, n):
     return res
 
 
-fastExpMod(2600, 1631, 5963)
+fastExpMod(254, 1631, 5963)
 # print(myMod(2600, 500))

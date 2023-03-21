@@ -3,9 +3,10 @@
 ;Entrada:
 ;    param0: número de caracteres (tamaño)
 ;    param1: dirección en memoria de la cadena de caracteres
+;Salida:
+;    eax: valor decimal
 ascii_to_dec:
     push rbp ;Ocupa 8 bytes      ;Guardar el valor de ebp sirve como referencia
-    pushenf:
     mov rbp, rsp                ;Set el nuevo base pointer
     nose:
 
