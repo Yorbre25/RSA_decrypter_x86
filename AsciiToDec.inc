@@ -5,7 +5,6 @@
 ;    param1: dirección en memoria de la cadena de caracteres
 ascii_to_dec:
     push rbp ;Ocupa 8 bytes      ;Guardar el valor de ebp sirve como referencia
-    pushenf:
     mov rbp, rsp                ;Set el nuevo base pointer
     nose:
 
