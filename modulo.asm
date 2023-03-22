@@ -30,3 +30,26 @@ modMul:
     mov rsp, rbp                ;Mover el stack pointer a la posición de rbp
     pop rbp                     ;Recuperar el valor de rbp
     ret                         ;Retornar
+
+    ; a mod(y)
+    mod:
+    push rbp ;Ocupa 8 bytes     ;Guardar el valor de ebp sirve como referencia
+    mov rbp, rsp                ;Set el nuevo base pointer
+
+    mov esi, [rbp + 16]         ;Obtener valor de y
+    mov eax, [rbp + 24]         ;obtener valor de a
+
+    cmp eax, esi                ;Comprobar si x es menor que y
+    jl break_loop_mod
+
+    loop_mod:
+        sub eax, esi            ;Restar y a x
+        cmp eax, esi            ;Comprobar si x es menor que y
+        jge loop_mod
+
+    break_loop_mod:
+    mov [rbp - 8], eax          ;Valor de retorno
+
+    mov rsp, rbp                ;Mover el stack pointer a la posición de rbp
+    pop rbp                     ;Recuperar el valor de rbp
+    ret                         ;Retornar

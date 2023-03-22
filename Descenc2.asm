@@ -1,4 +1,4 @@
-%include "AsciiToDec.inc"
+%include "ascii_dec.inc"
 %include "modulo.asm"
 
 section .data

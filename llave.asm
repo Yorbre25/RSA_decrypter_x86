@@ -12,8 +12,8 @@ section .text
     global _start
     
 _start:
-    ;Print Input de e
-    mov eax, 4              ;System call "print"
+    ;Write Input de e
+    mov eax, 4              ;System call "write"
     mov ebx, 1              ;File descriptor (stdout)
     mov ecx, inputE         ;Mensaje
     mov edx, lenInputE      ;Tamaño de mensaje
