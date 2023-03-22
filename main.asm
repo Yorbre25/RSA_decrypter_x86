@@ -1,17 +1,17 @@
-%include "readFile.asm"
+%include "read_file.asm"
 %include "decrypt.asm"
 %include "write_file.asm"
 
 section .data
-    inputFilename dw "5.txt", 0         ;Nombre del archivo que se va a leer
+    inputFilename dw "input.txt", 0       ;Nombre del archivo que se va a leer
     outputFilename dw "output.txt"        ;Nombre del archivo que se va a escribir
     space dw 32
-    n dw 5963
-    d dw 1631
+    n dw 2747
+    d dw 1531
 
 section .bss
     fd_in resb 4                        ;File descriptor
-    fd_out resb 4                        ;File descriptor
+    fd_out resb 4                       ;File descriptor
     buffer resb 4                       ;Buffer de lectura
     num1 resb 4                         ;Primer numero leido
     num2 resb 4                         ;Segundo numero leido
@@ -45,6 +45,7 @@ _start:
 
 
     ;Escribir el resultado en otro archivo
+    keep_writing:
     mov [data], eax
     jmp writing_loop
     ; jmp print_data
