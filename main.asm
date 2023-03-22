@@ -3,9 +3,9 @@
 %include "write_file.asm"
 
 section .data
-    inputFilename db "5.txt", 0         ;Nombre del archivo que se va a leer
-    outputFilename db "output.txt"        ;Nombre del archivo que se va a escribir
-    space db 32
+    inputFilename dw "5.txt", 0         ;Nombre del archivo que se va a leer
+    outputFilename dw "output.txt"        ;Nombre del archivo que se va a escribir
+    space dw 32
     n dw 5963
     d dw 1631
 
@@ -25,7 +25,15 @@ section .text
 
 _start:
     ;Crear archivo
+    mov rax, 8                          ;sys_create
+    mov rbx, outputFilename             ;Nombre del archivo que se va a leer
+    mov rcx, 0777                       ;Flags
+    int 0x80                            ;Llamada al sistema
 
+    post_create:
+    mov r15, rax                        ;Guardar file descriptor
+    mov [fd_out], eax                   ;Guardar file descriptor
+    despues:
 
     ;Abrir archivo y comenzar a leerlo
     jmp read_file
@@ -37,8 +45,8 @@ _start:
 
 
     ;Escribir el resultado en otro archivo
-    mov [data], byte 103
-    jmp primero
+    mov [data], eax
+    jmp writing_loop
     ; jmp print_data
 
     ;Continuar leyendo
@@ -46,10 +54,11 @@ _start:
     jmp reading_loop
 
 
+
 end_program:
-    ; close:
-    ; mov eax, 6                           ;sys_close
-    ; mov ebx, [fd_out]
+    close:
+    mov eax, 6                           ;sys_close
+    mov ebx, [fd_out]
 
     ;Terminar programa
     mov rax, 1         

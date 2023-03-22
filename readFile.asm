@@ -7,13 +7,14 @@ read_file:
     int 0x80                                ;Llamada al sistema
 
     ;NO SE VERIFICAN ERRORES
-    mov [fd_in], rax                        ;Guardar file descriptor
+    mov [fd_in], eax                        ;Guardar file descriptor
 
     mov r15, 10                         
     reading_loop:
         ;Verificar si se llegó al final del archivo
-        mov rax, [file_end]
-        cmp rax, 1
+        mov cl, byte [file_end]
+        cmp cl, 1
+        checkEnd:
         je break_reading_loop
 
         num1_loop:
