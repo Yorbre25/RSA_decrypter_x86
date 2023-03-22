@@ -91,10 +91,6 @@ _start:
     mov rdx, 1                          ;Tamaño del buffer
     int 0x80                            ;Llamada al sistema
 
-
-
-
-
     close:
     mov eax, 6                           ;sys_close
     mov ebx, [fdOut]
