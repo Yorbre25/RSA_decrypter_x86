@@ -31,8 +31,8 @@ modMul:
     pop rbp                     ;Recuperar el valor de rbp
     ret                         ;Retornar
 
-    ; a mod(y)
-    mod:
+; a mod(y)
+mod:
     push rbp ;Ocupa 8 bytes     ;Guardar el valor de ebp sirve como referencia
     mov rbp, rsp                ;Set el nuevo base pointer
 

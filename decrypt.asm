@@ -1,31 +1,20 @@
-%include "ascii_dec.inc"
 %include "modulo.asm"
 
-section .data
-    ; num db 254
-    ; exp dw 1631
-    ; mod dw 5963
-    mod db 50
-    num db 3
-    exp db 200
+modular_exponentiation:
+    push rbp ;Ocupa 8 bytes     ;Guardar el valor de ebp sirve como referencia
+    mov rbp, rsp                ;Set el nuevo base pointer
 
-section .bss
+    mov r8, [rbp + 16]         ;Obtener valor de la base
 
-section .text
-    global _start
-
-_start:
-    ; mov r8, [base]      ;Obtener mensaje encriptado
-    ; mov r9, [mod]      ;Obtener modulo
-    ; mov r10, [exp]      ;Obtener exponente
-    mov r8,254              ;base
-    mov r9,7031               ;mod
-    mov r10,6449               ;exp
+    movzx r9, word [n]               ;mod
+    ; mov r9, 2747               ;mod
+    movzx r10, word [d]              ;exp
+    ; mov r10, 1531              ;exp
 
     mov rbx, 1              ;Inicializar resultado en 1
-    squareAndMul:
+    square_and_mul:
         cmp r10, 0          ;Comprobar si el exponente ya no tiene bits 1
-        je break_squareAndMul
+        je break_square_and_mul
         mov rcx, r10
         and rcx, 1          ;Obtener el bit menos significativo
 
@@ -47,13 +36,13 @@ _start:
 
             mov r8, rax    ;Guardar resultado en la base
         shr r10, 1          ;Mover el exponente un bit a la derecha
-        jnz squareAndMul
-    break_squareAndMul:
+        jnz square_and_mul
+    break_square_and_mul:
 
+    mov [rbp - 8], rbx          ;Valor de retorno
+    mov rax, rbx
 
-final:
-    ;Terminar programa
-    mov rax, 1         
-    mov ebx, 0   
-    int 0x80           
+    mov rsp, rbp                ;Mover el stack pointer a la posición de rbp
+    pop rbp                     ;Recuperar el valor de rbp
+    ret                         ;Retornar
 
