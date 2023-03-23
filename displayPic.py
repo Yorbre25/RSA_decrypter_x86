@@ -41,12 +41,12 @@ def make_pics():
     enc_pic.close()    
 
 
-# os.remove(denc_path)
-# os.system("nasm -felf64 -o main.o main.asm")
-# os.system("ld -o main main.o")
-# os.system("./main")
+os.remove(denc_path)
+os.system("nasm -felf64 -o main.o main.asm")
+os.system("ld -o main main.o")
+os.system("./main")
 
-# make_pics()
+make_pics()
 
 
 window = tk.Tk()

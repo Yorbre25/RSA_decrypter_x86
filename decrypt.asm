@@ -7,9 +7,9 @@ modular_exponentiation:
     mov r8, [rbp + 16]         ;Obtener valor de la base
 
     movzx r9, word [n]               ;mod
-    movzx r10, word [d]               ;exp
-    ; mov r9,15               ;mod
-    ; mov r10,11               ;exp
+    ; mov r9, 2747               ;mod
+    movzx r10, word [d]              ;exp
+    ; mov r10, 1531              ;exp
 
     mov rbx, 1              ;Inicializar resultado en 1
     square_and_mul:
