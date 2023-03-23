@@ -1,3 +1,4 @@
+; STRINGS DE SOLICITUD DE LLAVE
 inputE db "Introduzca e: "
 lenInputE equ $-inputE
 
@@ -7,4 +8,7 @@ lenInputD equ $-inputD
 inputN db "Introduzca n: "
 lenInputN equ $-inputN
 
-inputSize equ 4
+inputSize equ 5             ;Tamaño de los inputs
+
+
+

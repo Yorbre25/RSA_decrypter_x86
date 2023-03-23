@@ -2,3 +2,5 @@
 !/**/
 !*.* 
 *.o
+output .txt
+*.png

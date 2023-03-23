@@ -3,11 +3,11 @@
 ;Entrada:
 ;    param0: número de caracteres (tamaño)
 ;    param1: dirección en memoria de la cadena de caracteres
+;Salida:
+;    eax: valor decimal
 ascii_to_dec:
-    push rbp ;Ocupa 8 bytes      ;Guardar el valor de ebp sirve como referencia
-    pushenf:
+    push rbp                    ;Guardar el valor de ebp sirve como referencia
     mov rbp, rsp                ;Set el nuevo base pointer
-    nose:
 
     mov esi, [rbp + 16]         ;Puntero a cadena de caracteres
     mov ebx, esi        
@@ -39,3 +39,22 @@ ascii_to_dec:
     mov rsp, rbp                ;Mover el stack pointer a la posición de rbp
     pop rbp                     ;Recuperar el valor de rbp
     ret                         ;Retornar
+
+
+
+dec_to_ascii:
+    push rbp                    ;Guardar el valor de ebp sirve como referencia
+    mov rbp, rsp                ;Set el nuevo base pointer
+
+    mov esi, [rbp + 16]         ;Puntero al numero decimal
+    mov rax, [esi]
+
+    mov rdx, 10                 ;Divisor
+    mov rbx, 0                  ;# de dígitos
+    numDigits:
+        div rdx                 ;Dividir el número por 10
+        inc rbx                 ;Incrementar el contador de dígitos
+        cmp rax, 0              ;Verificar si el número es 0
+        jge numDigits    
+    fin:       
+
