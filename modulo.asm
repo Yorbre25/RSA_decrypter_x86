@@ -31,7 +31,12 @@ modMul:
     pop rbp                     ;Recuperar el valor de rbp
     ret                         ;Retornar
 
-; a mod(y)
+; Función que calcula el modulo a mod(y)
+; Entrada:
+;   param0: a (int)
+;   param1: y (int)
+; Salida:
+;   eax: a mod(y) (int)
 mod:
     push rbp ;Ocupa 8 bytes     ;Guardar el valor de ebp sirve como referencia
     mov rbp, rsp                ;Set el nuevo base pointer

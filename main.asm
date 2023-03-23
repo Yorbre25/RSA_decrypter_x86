@@ -1,7 +1,11 @@
 %include "read_file.asm"
 %include "decrypt.asm"
-%include "llave.asm"
+%include "key.asm"
 %include "write_file.asm"
+
+; El programa toma un archivo txt encriptado por medio de RSA y lo desencripta, escribiendo
+; el resultado en un archivo .txt llamado output.
+; A la hora de correr el programa solicita los valores de n y d de la llave privada.
 
 section .data
     inputFilename dw "input.txt", 0       ;Nombre del archivo que se va a leer
@@ -47,7 +51,6 @@ _start:
     jmp get_inputs
 
     post_inputs:
-
     ;Abrir archivo y comenzar a leerlo
     jmp read_file
 
@@ -61,7 +64,6 @@ _start:
     keep_writing:
     mov [data], eax
     jmp writing_loop
-    ; jmp print_data
 
     ;Continuar leyendo
     keep_reading:
@@ -70,7 +72,7 @@ _start:
 
 
 end_program:
-    close:
+    ; Cerrar archivo de escritura
     mov eax, 6                           ;sys_close
     mov ebx, [fd_out]
 

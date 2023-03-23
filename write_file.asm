@@ -1,3 +1,6 @@
+; Escribe el reusltado del mensaje desencriptado. Recorre el numero 
+; que se va a escribir y lo escribe bit a bit.
+
 writing_loop:
     print_data:
         mov r9, 7                      ;posicion del bit por impirmir

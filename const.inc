@@ -8,7 +8,7 @@ lenInputD equ $-inputD
 inputN db "Introduzca n: "
 lenInputN equ $-inputN
 
-inputSize equ 4             ;Tamaño de los inputs
+inputSize equ 5             ;Tamaño de los inputs
 
 
 
