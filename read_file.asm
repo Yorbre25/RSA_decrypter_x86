@@ -1,3 +1,8 @@
+; Recorre el archivo y guarda los valores en num1 y num2
+; Cada ciclo de reading_loop extrae un par de numeros, luego.
+; Al llegar al final del archivo, se salta a set_file_end y se 
+; cierra el archivo.
+
 read_file:
     ;Abrir Archivo
     mov rax, 5                              ;sys_open
@@ -6,15 +11,12 @@ read_file:
     mov rdx, 0777                           ;Permisos
     int 0x80                                ;Llamada al sistema
 
-    ;NO SE VERIFICAN ERRORES
     mov [fd_in], eax                        ;Guardar file descriptor
-
     mov r15, 10                         
     reading_loop:
         ;Verificar si se llegó al final del archivo
         mov cl, byte [file_end]
         cmp cl, 1
-        checkEnd:
         je break_reading_loop
 
         num1_loop:

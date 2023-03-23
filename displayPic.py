@@ -5,9 +5,13 @@ import tkinter as tk
 from tkinter import *
 import os
 
+# Archivos con los datos de las imagenes
 denc_path = "output.txt "
 enc_path = "input.txt"
 
+# Funciones para obtener los valores de los pixeles de las imagenes
+
+# Se obtienen los valores de los pixeles de la imagen codificada
 def get_denc_pixel_values(path, list):
     with open(path, 'rb') as file:
         for line in file:
@@ -16,6 +20,8 @@ def get_denc_pixel_values(path, list):
                 list.append(int(num, 2))
         return list
 
+# Se obtienen los valores de los pixeles de la imagen decodificada 
+# y se convierten a decimal
 def get_enc_pixel_values(path, list):
     with open(path, 'rb') as file:
         for line in file:
@@ -24,6 +30,7 @@ def get_enc_pixel_values(path, list):
                 list.append(int(num))
         return list
 
+# Funcion para crear las imagenes
 def make_pics():
     enc_pic_values = []
     denc_pic_values = []
@@ -48,7 +55,7 @@ os.system("./main")
 
 make_pics()
 
-
+# Crear la ventana y colocar imagenes
 window = tk.Tk()
 window.geometry("1280x960")
 
